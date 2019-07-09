@@ -26,8 +26,10 @@ node {
         /* Ideally, we would run a test framework against our image.
          * For this example, we're using a Volkswagen-type approach ;-) */
 
+		set +e
         sh 'docker stop kart'
 		sh 'docker rm kart'
+		set -e
 		sh 'docker run -d --name kart -p 3000:3000 user-un/kart'
     }
 
