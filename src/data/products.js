@@ -1,7 +1,7 @@
 const data = [
   {
     id: 1,
-    name: 'OHH Josslyn',
+    name: 'Oh My God Josslyn',
     price: 499.99,
     currency: 'EUR',
     image: 'images/01.jpg',
