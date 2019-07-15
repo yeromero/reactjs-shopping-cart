@@ -1,8 +1,8 @@
 const data = [
   {
     id: 1,
-    name: 'Test Josslyn',
-    price: 499.99,
+    name: 'Test Demo DESI',
+    price: 2599.99,
     currency: 'EUR',
     image: 'images/01.jpg',
   },
