@@ -57,7 +57,7 @@ docker-compose --version
 
 ```
 
-## 3. Install the app framework. Node JS
+## 3. Install the app framework. Node JS (to run directly on the vm - without docker )
 
 ```sh
 
