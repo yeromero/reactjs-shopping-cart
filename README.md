@@ -57,7 +57,9 @@ docker-compose --version
 
 ```
 
-## 3. Install the app framework. Node JS (to run directly on the vm - without docker )
+## 3. Install the app framework. 
+
+Run this just to understand how the application works on virtual machine -without docker-. This is intented to understand from the developer's perspective how to develop and run the app.
 
 ```sh
 
@@ -69,7 +71,7 @@ nvm install 11
 
 ```
 
-## 4. Clone the repo 
+## 4. Clone the repo and run the app
 
 You will find the app developed by Kris Urbas, the Dockerfile and the docker-compose.yaml designed for this hands-on.
 
@@ -89,7 +91,7 @@ In a browser open the app running in your machine on port 3000
 
 ## 5. Let's build an image of the app
 
-Run this command to look the images already downloaded on the virtual machine
+Run this command to look the images already downloaded/installed on the virtual machine
 
 ```sh
 docker image ls
