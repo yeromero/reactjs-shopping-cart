@@ -90,23 +90,43 @@ In a browser open the app running in your machine on port 3000
 Run this command to look the images already downloaded on the virtual machine
 
 ```sh
-
 docker image ls
-
 ```
 
+Now it's time to build our own docker image. You should be located where the Dockerfile is. 
+
+```sh
 docker build -t banrep/kart .
+```
 
+Check the existing images on the virtual machine
 
+```sh
+docker image ls
+```
 
+Run the container with the app
+
+```sh
 docker run -d --name kart -p 3000:3000 banrep/kart
 
 docker ps
 
+```
+
+To kill the container:
+
+
+```sh
 docker kill kart
+```
 
+Another example of how to run containers in a declarative way is by using Docker-compose. 
+
+Please check the docker-compose.yaml file. You will find the description of a Jenkins CI Server. Run the following command:
+
+```sh
 docker-compose up -d
-
 ```
 
 Install all the requirements on the server and the dependencies for the app. Then starts local dev server
