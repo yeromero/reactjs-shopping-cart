@@ -46,21 +46,32 @@ docker ps
 
 ```
 
+2. Install Docker-Compose
 
-
-
+```sh
 sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
 
 sudo chmod +x /usr/local/bin/docker-compose
 
 docker-compose --version
+
+```
+
+3. Install the app framework. Node JS
+
+```sh
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
 source ~/.bashrc
 
 nvm install 11
+
+```
+
+4. Clone the repo with the app developed by Kris Urbas
+
+```sh
 
 git clone https://github.com/danielpenagos/reactjs-shopping-cart.git
 
@@ -70,9 +81,23 @@ npm install
 
 npm start
 
-docker build -t banrep/kart .
+```
+
+In a browser open the app running in your machine on port 3000
+
+5. Let's build an image of the app
+
+Run this command to look the images already downloaded on the virtual machine
+
+```sh
 
 docker image ls
+
+```
+
+docker build -t banrep/kart .
+
+
 
 docker run -d --name kart -p 3000:3000 banrep/kart
 
