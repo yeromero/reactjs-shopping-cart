@@ -10,7 +10,7 @@ for the original demo of the app [click here](http://krzysu.github.io/reactjs-sh
 
 Install all the requirements on the server.
 
-1. Install Docker
+## 1. Install Docker
 
 ```sh
 sudo apt-get install     apt-transport-https ca-certificates     curl software-properties-common
@@ -46,7 +46,7 @@ docker ps
 
 ```
 
-2. Install Docker-Compose
+## 2. Install Docker-Compose
 
 ```sh
 sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -57,7 +57,7 @@ docker-compose --version
 
 ```
 
-3. Install the app framework. Node JS
+## 3. Install the app framework. Node JS
 
 ```sh
 
@@ -69,7 +69,7 @@ nvm install 11
 
 ```
 
-4. Clone the repo with the app developed by Kris Urbas
+## 4. Clone the repo with the app developed by Kris Urbas
 
 ```sh
 
@@ -85,7 +85,7 @@ npm start
 
 In a browser open the app running in your machine on port 3000
 
-5. Let's build an image of the app
+## 5. Let's build an image of the app
 
 Run this command to look the images already downloaded on the virtual machine
 
@@ -104,8 +104,7 @@ Check the existing images on the virtual machine
 ```sh
 docker image ls
 ```
-
-Run the container with the app
+## 6. Run the container with the app
 
 ```sh
 docker run -d --name kart -p 3000:3000 banrep/kart
@@ -121,25 +120,19 @@ To kill the container:
 docker kill kart
 ```
 
+## 7. Example of docker-compose
+
 Another example of how to run containers in a declarative way is by using Docker-compose. 
 
 Please check the docker-compose.yaml file. You will find the description of a Jenkins CI Server. Run the following command:
 
 ```sh
 docker-compose up -d
+
+docker ps
 ```
 
-Install all the requirements on the server and the dependencies for the app. Then starts local dev server
-
-## details
-- build with [create react app](https://github.com/facebookincubator/create-react-app). Check their page for more details.
-- this example is using redux.js for application state management, to learn more about it I recommend [this tutorial](https://egghead.io/courses/getting-started-with-redux).
-- you can look under the hood directly from your browser using [redux devtools](https://github.com/zalmoxisus/redux-devtools-extension). Install extension for your browser, open demo page (link above) and see how app state changes when you interact with it.
-- if you wonder why reducers, actions and selectors are all in one file inside folder called `ducks`, [read more here](https://github.com/erikras/ducks-modular-redux).
-
-## TODO
-- add reducers and selectors unit tests
-
 * * *
-author: Kris Urbas [@krzysu](https://twitter.com/krzysu)   
+
+author of the kart app: Kris Urbas [@krzysu](https://twitter.com/krzysu)   
 licence: MIT
