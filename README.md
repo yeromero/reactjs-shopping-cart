@@ -1,17 +1,90 @@
 # react.js shopping cart
 
-example of shopping cart implemented in react.js and redux.js
 
-for demo [click here](http://krzysu.github.io/reactjs-shopping-cart/)
+Example of how to run containers from scratch, using a simple app implemented by Kris Urbas in react.js and redux.js 
+Designed by Daniel Penagos
+
+for the original demo of the app [click here](http://krzysu.github.io/reactjs-shopping-cart/)
 
 ## getting started
 
-install dependencies and start local dev server
+Install all the requirements on the server.
+
+1. Install Docker
 
 ```sh
-npm install
-npm start
+sudo apt-get install     apt-transport-https ca-certificates     curl software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
+
+sudo apt-get install docker-ce
+
+
+docker --version
+
 ```
+
+The user is now able to run some commands, but not all of them. To enable add the user into the docker group
+
+```sh
+
+sudo usermod -a -G docker <user>
+
+```
+
+Restart the session. 
+DPENAGBO TODO: Add the command to restart the session without closing the session.
+
+Now you should be able to run this command:
+```sh
+
+docker ps
+
+```
+
+
+
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+source ~/.bashrc
+
+nvm install 11
+
+git clone https://github.com/danielpenagos/reactjs-shopping-cart.git
+
+cd reactjs-shopping-cart
+
+npm install
+
+npm start
+
+docker build -t banrep/kart .
+
+docker image ls
+
+docker run -d --name kart -p 3000:3000 banrep/kart
+
+docker ps
+
+docker kill kart
+
+docker-compose up -d
+
+```
+
+Install all the requirements on the server and the dependencies for the app. Then starts local dev server
 
 ## details
 - build with [create react app](https://github.com/facebookincubator/create-react-app). Check their page for more details.
