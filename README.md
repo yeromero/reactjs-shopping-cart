@@ -1,4 +1,4 @@
-# react.js shopping cart
+# Workshop - Hands On - Understanding Containers
 
 
 Example of how to run containers from scratch, using a simple app implemented by Kris Urbas in react.js and redux.js 
@@ -69,7 +69,9 @@ nvm install 11
 
 ```
 
-## 4. Clone the repo with the app developed by Kris Urbas
+## 4. Clone the repo 
+
+You will find the app developed by Kris Urbas, the Dockerfile and the docker-compose.yaml designed for this hands-on.
 
 ```sh
 
