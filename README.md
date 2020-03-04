@@ -34,6 +34,8 @@ The user is now able to run some commands, but not all of them. To enable add th
 
 sudo usermod -a -G docker <user>
 
+sudo newgrp docker
+
 ```
 
 Restart the session. 
