@@ -25,3 +25,5 @@ nvm install 11
 sudo apt -y install openjdk-8-jdk-headless
 
 sudo bash -c "echo JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 >> /etc/environment"
+
+source /etc/environment
