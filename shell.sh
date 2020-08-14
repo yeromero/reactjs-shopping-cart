@@ -22,4 +22,6 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
 nvm install 11
 
-sudo apt -y install openjdk-8-jre-headless
+sudo apt -y install openjdk-8-jdk-headless
+
+sudo bash -c "echo JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 >> /etc/environment"
