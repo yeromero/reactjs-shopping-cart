@@ -27,3 +27,13 @@ sudo apt -y install openjdk-8-jdk-headless
 sudo bash -c "echo JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 >> /etc/environment"
 
 source /etc/environment
+
+sudo apt -y install maven
+
+#sudo curl -o /opt/apache-maven-3.6.3-bin.tar.gz https://downloads.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+
+#cd /opt
+
+#sudo tar xzvf apache-maven-3.6.3-bin.tar.gz
+
+#sudo bash -c "echo PATH=/opt/apache-maven-3.6.3/bin:$PATH >> ~/.profile"
