@@ -1,8 +1,10 @@
 # Workshop - Hands On - Understanding Containers
 
+Example of how to run containers from scratch, using a simple app implemented by Kris Urbas in react.js and redux.js
 
-Example of how to run containers from scratch, using a simple app implemented by Kris Urbas in react.js and redux.js 
-Designed by Daniel Penagos
+- Designed by Daniel Penagos
+  
+- Forked By Manuel Alejandro Vargas
 
 for the original demo of the app [click here](http://krzysu.github.io/reactjs-shopping-cart/)
 
@@ -38,10 +40,11 @@ sudo newgrp docker
 
 ```
 
-Restart the session. 
+Restart the session.
 DPENAGBO TODO: Add the command to restart the session without closing the session.
 
 Now you should be able to run this command:
+
 ```sh
 
 docker ps
@@ -59,7 +62,7 @@ docker-compose --version
 
 ```
 
-## 3. Install the app framework. 
+## 3. Install the app framework
 
 Run this just to understand how the application works on virtual machine -without docker-. This is intented to understand from the developer's perspective how to develop and run the app.
 
@@ -99,7 +102,7 @@ Run this command to look the images already downloaded/installed on the virtual 
 docker image ls
 ```
 
-Now it's time to build our own docker image. You should be located where the Dockerfile is. 
+Now it's time to build our own docker image. You should be located where the Dockerfile is.
 
 ```sh
 docker build -t banrep/kart .
@@ -110,6 +113,7 @@ Check the existing images on the virtual machine
 ```sh
 docker image ls
 ```
+
 ## 6. Run the container with the app
 
 ```sh
@@ -121,14 +125,13 @@ docker ps
 
 To kill the container:
 
-
 ```sh
 docker kill kart
 ```
 
 ## 7. Example of docker-compose
 
-Another example of how to run containers in a declarative way is by using Docker-compose. 
+Another example of how to run containers in a declarative way is by using Docker-compose.
 
 Please check the docker-compose.yaml file. You will find the description of a Jenkins CI Server. Run the following command:
 
@@ -140,5 +143,5 @@ docker ps
 
 * * *
 
-author of the kart app: Kris Urbas [@krzysu](https://twitter.com/krzysu)   
+author of the kart app: Kris Urbas [@krzysu](https://twitter.com/krzysu)
 licence: MIT

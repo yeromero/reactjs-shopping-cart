@@ -17,7 +17,7 @@ RUN npm install
 COPY . .
 
 # set maintainer
-LABEL maintainer "dpenagbo@banrep.gov.co"
+LABEL maintainer "malevarro.sec@gmail.com"
 
 # set a health check
 
