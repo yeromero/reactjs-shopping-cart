@@ -19,7 +19,7 @@ variables:
 steps:
 - checkout: self
 - checkout: custom-checks
-- script:
+- script: |
   echo "[+] Fetching Trivy"
   export TRIVYVERSION=$(git ls-remote --refs --sort="version:refname" --tags https://github.com/aquasecurity/trivy | cut -d/ -f3-|tail -n1 | sed -e 's/^.//')
   echo "[+] Trivy Version:" ${TRIVYVERSION}
@@ -42,4 +42,3 @@ steps:
   trivy --quiet --cache-dir $TRIVYCACHE image --compliance docker-cis $(containerRegistryn)/$(malevarrokart)
   echo "[+] Writing Trivy Docker Compliance JSON File" 
   trivy --quiet --cache-dir $TRIVYCACHE image --compliance docker-cis --format json --output $ARTIFACT_FOLDER/trivy_compliance_results.json $(containerRegistryn)/$(malevarrokart)
-
