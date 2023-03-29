@@ -26,7 +26,7 @@ steps:
     echo "[+] Trivy Version:" ${TRIVYVERSION}
     wget -nv --no-cache https://github.com/aquasecurity/trivy/releases/download/v${TRIVYVERSION}/trivy_${TRIVYVERSION}_Linux-64bit.deb
     echo "[+] Installing Trivy"
-    dpkg -i trivy_${TRIVYVERSION}_Linux-64bit.deb
+    sudo dpkg -i trivy_${TRIVYVERSION}_Linux-64bit.deb
     echo "[+] Trivy Installed "${TRIVYVERSION}
     export ARTIFACT_FOLDER="./json"
     echo "[+] Running Trivy"
