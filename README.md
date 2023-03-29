@@ -51,6 +51,7 @@ docker ps
 
 ```
 
+<!-- No longer necessary
 ## 2. Install Docker-Compose
 
 ```sh
@@ -61,6 +62,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 
 ```
+-->
 
 ## 3. Install the app framework
 
@@ -82,7 +84,7 @@ You will find the app developed by Kris Urbas, the Dockerfile and the docker-com
 
 ```sh
 
-git clone https://github.com/danielpenagos/reactjs-shopping-cart.git
+git clone https://github.com/malevarro/reactjs-shopping-cart.git
 
 cd reactjs-shopping-cart
 
@@ -105,7 +107,7 @@ docker image ls
 Now it's time to build our own docker image. You should be located where the Dockerfile is.
 
 ```sh
-docker build -t banrep/kart .
+docker build -t Malevarro/kart .
 ```
 
 Check the existing images on the virtual machine
@@ -117,7 +119,7 @@ docker image ls
 ## 6. Run the container with the app
 
 ```sh
-docker run -d --name kart -p 3000:3000 banrep/kart
+docker run -d --name kart -p 3000:3000 Malevarro/kart
 
 docker ps
 
