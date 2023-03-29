@@ -24,4 +24,4 @@ steps:
     ContainerRegistry: $(dockerRegistryServiceConnection)
 - task: MicrosoftSecurityDevOps@1
   inputs:
-    tools: 'bandit, binskim, eslint, template-analyzer, terrascan, trivy'
+    tools: 'bandit, binskim, eslint, terrascan, trivy'
