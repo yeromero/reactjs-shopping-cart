@@ -20,8 +20,8 @@ steps:
 - task: Docker@2
   displayName: Login to ACR
   inputs:
-    azureSubscription: AzureVS
-    azureContainerRegistry: '{"loginServer":"myacr21942.azurecr.io", "id" : "/subscriptions/8367106b-4426-4ef6-a298-0ed0b0b17138/resourceGroups/myaksrg-21942/providers/Microsoft.ContainerRegistry/registries/myacr21942"}'
+    #azureSubscription: AzureVS
+    ContainerRegistry: '{"loginServer":"myacr21942.azurecr.io", "id" : "/subscriptions/8367106b-4426-4ef6-a298-0ed0b0b17138/resourceGroups/myaksrg-21942/providers/Microsoft.ContainerRegistry/registries/myacr21942"}'
     command: 'login'
     imageName: '$(imageRepository)'
 - task: trivy@1
