@@ -33,13 +33,11 @@ steps:
     echo "[+] Trivy Installed "${TRIVYVERSION}
     echo "[+] Running Trivy"
     echo "***Vulneability Assesment***"
-    echo "[+] Writing Trivy JSON File" 
-    trivy image --exit-code 0 $(containerRegistryn)/$(imageRepository)
     echo "[+] Writing Trivy Text File" 
-    trivy image -f table --exit-code 0 $(containerRegistryn)/$(imageRepository)
+    trivy image -f table --exit-code 0 $(containerRegistryn)/$(imageRepository) > ./trivy_results.txt
     echo "***SBOM Analysis***"
     echo "[+] Writing Trivy SBOM JSON File" 
-    trivy image --scanners vuln --format cyclonedx --exit-code 0 $(containerRegistryn)/$(imageRepository)
+    trivy image --scanners vuln --format cyclonedx --output ./trivy_sbom_results.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
     echo "***Docker Compliance Analysis***"
     echo "[+] Writing Trivy Docker Compliance File" 
-    trivy image --compliance docker-cis $(containerRegistryn)/$(imageRepository)
+    trivy image --compliance docker-cis $(containerRegistryn)/$(imageRepository) > ./trivy_compliance_results.txt
