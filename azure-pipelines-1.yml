@@ -24,4 +24,3 @@ steps:
     ContainerRegistry: $(dockerRegistryServiceConnection)
 - task: MicrosoftSecurityDevOps@1
   inputs:
-    tools: 'trivy'
