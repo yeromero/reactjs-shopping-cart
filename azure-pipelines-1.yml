@@ -16,30 +16,13 @@ variables:
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
 
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-    - task: Docker@2
-      displayName: Login to ACR
-      inputs:
-        command: login
-        containerRegistry: $(dockerRegistryServiceConnection)
-    - task: trivy@1
-      inputs:
-        image: $(containerRegistry)/$(imageRepository)
-        version: 'latest'
+steps:
+- task: Docker@2
+  displayName: Login to ACR
+  inputs:
+    command: login
+    containerRegistry: $(dockerRegistryServiceConnection)
+- task: trivy@1
+  inputs:
+    image: $(containerRegistry)/$(imageRepository)
+    version: 'latest'
