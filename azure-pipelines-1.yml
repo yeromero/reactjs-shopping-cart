@@ -24,5 +24,5 @@ steps:
     containerRegistry: $(dockerRegistryServiceConnection)
 - task: trivy@1
   inputs:
-    image: $(containerRegistry)/$(imageRepository)
+    image: $(dockerRegistryServiceConnection)/$(imageRepository)
     version: 'latest'
