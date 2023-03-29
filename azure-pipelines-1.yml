@@ -20,5 +20,4 @@ steps:
 - checkout: self
 - checkout: custom-checks
 - script: |
-  echo "Fetching Trivy"
-  
+  echo "Running Checkov Scan!"
