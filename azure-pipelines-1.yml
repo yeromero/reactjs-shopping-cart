@@ -32,14 +32,14 @@ steps:
     echo "[+] Running Trivy"
     echo "***Vulneability Assesment***"
     echo "[+] Writing Trivy JSON File" 
-    trivy --quiet --cache-dir $TRIVYCACHE image -f json -o $ARTIFACT_FOLDER/trivy_results.json --exit-code 0 $(containerRegistryn)/$(malevarrokart)
+    trivy --quiet --cache-dir $TRIVYCACHE image -f json -o $ARTIFACT_FOLDER/trivy_results.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
     echo "[+] Writing Trivy Text File" 
-    trivy --quiet --cache-dir $TRIVYCACHE image -f table --exit-code 0 $(containerRegistryn)/$(malevarrokart)
+    trivy --quiet --cache-dir $TRIVYCACHE image -f table --exit-code 0 $(containerRegistryn)/$(imageRepository)
     echo "***SBOM Analysis***"
     echo "[+] Writing Trivy SBOM JSON File" 
-    trivy --quiet --cache-dir $TRIVYCACHE image --scanners vuln --format cyclonedx --output $ARTIFACT_FOLDER/trivy_sbom_results.json --exit-code 0 $(containerRegistryn)/$(malevarrokart)
+    trivy --quiet --cache-dir $TRIVYCACHE image --scanners vuln --format cyclonedx --output $ARTIFACT_FOLDER/trivy_sbom_results.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
     echo "***Docker Compliance Analysis***"
     echo "[+] Writing Trivy Docker Compliance File" 
-    trivy --quiet --cache-dir $TRIVYCACHE image --compliance docker-cis $(containerRegistryn)/$(malevarrokart)
+    trivy --quiet --cache-dir $TRIVYCACHE image --compliance docker-cis $(containerRegistryn)/$(imageRepository)
     echo "[+] Writing Trivy Docker Compliance JSON File" 
-    trivy --quiet --cache-dir $TRIVYCACHE image --compliance docker-cis --format json --output $ARTIFACT_FOLDER/trivy_compliance_results.json $(containerRegistryn)/$(malevarrokart)
+    trivy --quiet --cache-dir $TRIVYCACHE image --compliance docker-cis --format json --output $ARTIFACT_FOLDER/trivy_compliance_results.json $(containerRegistryn)/$(imageRepository)
