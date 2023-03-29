@@ -34,10 +34,19 @@ steps:
     echo "[+] Running Trivy"
     echo "***Vulneability Assesment***"
     echo "[+] Writing Trivy Text File" 
-    trivy image -f table --exit-code 0 $(containerRegistryn)/$(imageRepository) > ./trivy_results.txt
+    trivy image -f table --exit-code 0 $(containerRegistryn)/$(imageRepository)
     echo "***SBOM Analysis***"
     echo "[+] Writing Trivy SBOM JSON File" 
-    trivy image --scanners vuln --format cyclonedx --output ./trivy_sbom_results.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
+    trivy image -f table --scanners vuln  --exit-code 0 $(containerRegistryn)/$(imageRepository)
     echo "***Docker Compliance Analysis***"
     echo "[+] Writing Trivy Docker Compliance File" 
-    trivy image --compliance docker-cis $(containerRegistryn)/$(imageRepository) > ./trivy_compliance_results.txt
+    trivy image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository)
+
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      
+      echo 'Hello world'
