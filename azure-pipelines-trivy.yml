@@ -15,6 +15,7 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
+  sariflog: 'CodeAnalysisLogs'
 
 pool:
   vmImage: $(vmImageName)
@@ -33,6 +34,7 @@ stages:
             targetType: 'inline'
             script: |
               # Write your commands here
+              mkdir $(sariflog)
               export TRIVY_AUTH_URL=$(URL)
               export TRIVY_USERNAME=$(USERNAME)
               export TRIVY_PASSWORD=$(PASSWORD)
@@ -46,7 +48,7 @@ stages:
               echo "[+] Running Trivy"
               echo "***Vulneability Assesment***"
               echo "[+] Show Trivy Results"
-              trivy --quiet image -f table --exit-code 0 $(containerRegistryn)/$(imageRepository) > Vulns.txt
+              trivy --quiet image --format sarif -o $(sariflog)/reportvuln.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository)
               echo "***License Inventory***"
               echo "[+] Show Trivy License Inventory" 
               trivy --quiet image -f table --scanners license --exit-code 0 $(containerRegistryn)/$(imageRepository)
@@ -58,6 +60,6 @@ stages:
               trivy --quiet -f table config $(dockerfilePath)
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: '$(Pipeline.Workspace)'
-            artifact: 'Vulns.txt'
+            targetPath: '$(Pipeline.Workspace)/$(sariflog)'
+            artifact: '$(sariflog)'
             publishLocation: 'pipeline'
