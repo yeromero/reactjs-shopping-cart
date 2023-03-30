@@ -41,6 +41,21 @@ stages:
 - stage: SecurityScan
   displayName: SecurityAnalysis
   jobs:
+  - job: Snyk
+    displayName: Snyk
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: NodeAndNpmTool@1
+      inputs:
+        versionSpec: '10.x'
+        checkLatest: true
+    - task: SnykSecurityScan@1
+      inputs:
+        serviceConnectionEndpoint: 'SnykApp'
+        testType: 'app'
+        monitorWhen: 'always'
+        failOnIssues: false
   - job: Trivy
     displayName: Trivy
     pool:
@@ -74,21 +89,3 @@ stages:
           echo "***Docker Compliance Analysis***"
           echo "[+] Writing Trivy Docker Compliance File" 
           trivy image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository)
-  - job: Snyk
-    displayName: Snyk
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: NodeAndNpmTool@1
-      inputs:
-        versionSpec: '10.x'
-        checkLatest: true
-    - task: SnykSecurityScan@1
-      inputs:
-        serviceConnectionEndpoint: 'SnykApp'
-        testType: 'container'
-        dockerImageName: '$(containerRegistry)/$(imageRepository)'
-        dockerfilePath: '$(dockerfilePath)'
-        monitorWhen: 'always'
-        failOnIssues: false
-        additionalArguments: '---username=$(USERNAME) --password=$(PASSWORD)'
