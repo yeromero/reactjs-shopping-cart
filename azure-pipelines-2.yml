@@ -41,8 +41,8 @@ stages:
 - stage: SecurityScan
   displayName: SecurityAnalysis
   jobs:
-  - job: TrivyAdnSnyk
-    displayName: TrivyAdnSnyk
+  - job: Trivy
+    displayName: Trivy
     pool:
       vmImage: $(vmImageName)
     steps:
@@ -74,6 +74,11 @@ stages:
           echo "***Docker Compliance Analysis***"
           echo "[+] Writing Trivy Docker Compliance File" 
           trivy image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository)
+  - job: Snyk
+    displayName: Snyk
+    pool:
+      vmImage: $(vmImageName)
+    steps:
     - task: NodeAndNpmTool@1
       inputs:
         versionSpec: '10.x'
