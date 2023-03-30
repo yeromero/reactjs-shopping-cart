@@ -91,3 +91,4 @@ stages:
         dockerfilePath: '$(dockerfilePath)'
         monitorWhen: 'always'
         failOnIssues: false
+        additionalArguments: '---username=$(USERNAME) --password=<CONTAINER_REGISTRY_PASSWORD>'
