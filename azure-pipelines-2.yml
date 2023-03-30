@@ -53,7 +53,10 @@ stages:
           export TRIVY_AUTH_URL=$(URL)
           export TRIVY_USERNAME=$(USERNAME)
           export TRIVY_PASSWORD=$(PASSWORD)
-          echo "Conectando con ${TRIVY_AUTH_URL}"
+          echo "Variables de Conexión"
+          echo "Repositorio ${TRIVY_AUTH_URL}"
+          echo "Usuario ${TRIVY_USERNAME}"
+          echo "Password ${TRIVY_PASSWORD}"
           echo "[+] Fetching Trivy"
           export TRIVYVERSION=$(git ls-remote --refs --sort="version:refname" --tags https://github.com/aquasecurity/trivy | cut -d/ -f3-|tail -n1 | sed -e 's/^.//')
           echo "[+] Trivy Version:" ${TRIVYVERSION}
