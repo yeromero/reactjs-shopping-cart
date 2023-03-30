@@ -38,11 +38,11 @@ stages:
         tags: |
           $(tag)
 
-- stage: Security Scan
-  displayName: Security Analysis
+- stage: SecurityScan
+  displayName: SecurityAnalysis
   jobs:
-  - job: Trivy
-    displayName: Trivy
+  - job: TrivyAdnSnyk
+    displayName: TrivyAdnSnyk
     pool:
       vmImage: $(vmImageName)
     steps:
