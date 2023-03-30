@@ -86,3 +86,12 @@ stages:
             testType: 'app'
             monitorWhen: 'always'
             failOnIssues: false
+      - job: Mend
+        displayName: Mend
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - task: WhiteSource@21
+          inputs:
+            cwd: '$(System.DefaultWorkingDirectory)'
+            projectName: 'reactjs-shopping-cart'
