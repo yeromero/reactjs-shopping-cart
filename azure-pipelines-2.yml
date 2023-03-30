@@ -70,3 +70,15 @@ stages:
               echo "***Docker Compliance Analysis***"
               echo "[+] Writing Trivy Docker Compliance File" 
               trivy image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository)
+    - task: NodeAndNpmTool@1
+      inputs:
+        versionSpec: '10.x'
+        checkLatest: true
+    - task: SnykSecurityScan@1
+      inputs:
+        serviceConnectionEndpoint: 'SnykApp'
+        testType: 'container'
+        dockerImageName: '$(imageRepository)'
+        dockerfilePath: '$(dockerfilePath)'
+        monitorWhen: 'always'
+        failOnIssues: false
