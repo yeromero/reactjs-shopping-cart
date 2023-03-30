@@ -49,15 +49,18 @@ stages:
               echo "***Vulneability Assesment***"
               echo "[+] Show Trivy Results"
               trivy --quiet image --format sarif -o $(sariflog)/reportvuln.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository)
-              echo "***License Inventory***"
-              echo "[+] Show Trivy License Inventory" 
-              trivy --quiet image -f table --scanners license --exit-code 0 $(containerRegistryn)/$(imageRepository)
-              echo "***Docker Compliance Analysis***"
-              echo "[+] Show Trivy Docker Compliance File" 
-              trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository)
-              echo "***Dockerfile Analysis***"
-              echo "[+] Show Dockerfile Compliance" 
-              trivy --quiet -f table config $(dockerfilePath)
+              pwd
+              cd $(sariflog)
+              ls
+#              echo "***License Inventory***"
+#              echo "[+] Show Trivy License Inventory" 
+#              trivy --quiet image -f table --scanners license --exit-code 0 $(containerRegistryn)/$(imageRepository)
+#              echo "***Docker Compliance Analysis***"
+#              echo "[+] Show Trivy Docker Compliance File" 
+#              trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository)
+#              echo "***Dockerfile Analysis***"
+#              echo "[+] Show Dockerfile Compliance" 
+#              trivy --quiet -f table config $(dockerfilePath)
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: '$(Pipeline.Workspace)/$(sariflog)'
