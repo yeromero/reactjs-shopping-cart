@@ -66,14 +66,14 @@ stages:
               echo "[+] Show Trivy Results"
               trivy image -f table --exit-code 0 $(containerRegistryn)/$(imageRepository)
               echo "***SBOM Inventory***"
-              echo "[+] Show Trivy SBOM File" 
-              trivy sbom  --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              echo "[+] Show Trivy License Information" 
+              trivy image --scanners license --exit-code 0 $(containerRegistryn)/$(imageRepository)
               echo "***Docker Compliance Analysis***"
               echo "[+] Show Trivy Docker Compliance File" 
               trivy image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository)
               echo "***Dockerfile Analysis***"
               echo "[+] Show Dockerfile Compliance" 
-              trivy config $(dockerfilePath)
+              trivy conf $(dockerfilePath)
       - job: Snyk
         displayName: Snyk
         pool:
