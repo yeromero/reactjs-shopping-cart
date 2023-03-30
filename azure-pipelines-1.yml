@@ -46,7 +46,7 @@ stages:
               echo "[+] Running Trivy"
               echo "***Vulneability Assesment***"
               echo "[+] Show Trivy Results"
-              trivy --quiet image --format sarif -o reportvul.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              trivy --quiet image --format sarif -o CodeAnalysisLogs --exit-code 0 $(containerRegistryn)/$(imageRepository)
               echo "***License Inventory***"
               echo "[+] Show Trivy License Inventory" 
               trivy --quiet image -f table --scanners license --exit-code 0 $(containerRegistryn)/$(imageRepository)
