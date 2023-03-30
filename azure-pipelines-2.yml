@@ -95,3 +95,21 @@ stages:
           inputs:
             cwd: '$(System.DefaultWorkingDirectory)'
             projectName: 'reactjs-shopping-cart'
+      - job: SonarCloud
+        displayName: SonarCloud
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - checkout: self
+          fetchDepth: 0
+        - task: SonarCloudPrepare@1
+          inputs:
+            SonarCloud: 'SonarCloud'
+            organization: 'malevarro-devsecops'
+            scannerMode: 'MSBuild'
+            projectKey: 'malevarro_reactjs-shopping-cart2'
+            projectName: 'reactjs-shopping-cart'
+        - task: SonarCloudAnalyze@1
+        - task: SonarCloudPublish@1
+          inputs:
+            pollingTimeoutSec: '300'
