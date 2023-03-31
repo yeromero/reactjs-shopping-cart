@@ -1,0 +1,144 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  dockerRegistryServiceConnection: '26a65500-b05f-4a4c-a7dd-73a9e7a59dcb'
+  imageRepository: 'malevarrokart'
+  containerRegistryn: 'myacr21942.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+  vmImageName: 'ubuntu-latest'
+
+pool:
+  vmImage: $(vmImageName)
+
+stages:
+  - stage: CodeSecurityScan
+    displayName: Code Security Scan
+    jobs:
+      - job: Mend
+        displayName: Mend
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - task: WhiteSource@21
+          inputs:
+            cwd: '$(System.DefaultWorkingDirectory)'
+            projectName: 'reactjs-shopping-cart'
+      - job: SonarCloud
+        displayName: SonarCloud
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - checkout: self
+          fetchDepth: 0
+        - task: SonarCloudPrepare@1
+          inputs:
+            SonarCloud: 'SonarCloud'
+            organization: 'malevarro-devsecops'
+            scannerMode: 'MSBuild'
+            projectKey: 'malevarro_reactjs-shopping-cart2'
+            projectName: 'reactjs-shopping-cart'
+        - task: SonarCloudAnalyze@1
+        - task: SonarCloudPublish@1
+          inputs:
+            pollingTimeoutSec: '300'
+#- stage: Build
+#  displayName: Build and push stage
+#  jobs:
+#  - job: Build
+#    displayName: Build
+#    pool:
+#      vmImage: $(vmImageName)
+#    steps:
+#    - task: Docker@2
+#      displayName: Build and push an image to container registry
+#      inputs:
+#        command: buildAndPush
+#        repository: $(imageRepository)
+#        dockerfile: $(dockerfilePath)
+#        containerRegistry: $(dockerRegistryServiceConnection)
+#        tags: |
+#          $(tag)
+
+  - stage: ImageSecurityScan
+    displayName: Image Security Analysis
+    jobs:
+      - job: Snyk
+        displayName: Snyk
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'myacr21942'
+            command: 'login'
+        - task: SnykSecurityScan@1
+          inputs:
+            serviceConnectionEndpoint: 'SnykApp'
+            testType: 'container'
+            dockerImageName: '$(containerRegistryn)/$(imageRepository)'
+            dockerfilePath: '$(dockerfilePath)'
+            monitorWhen: 'always'
+            failOnIssues: false
+      - job: Trivy
+        displayName: Trivy
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'myacr21942'
+            command: 'login'
+        - task: trivy@1
+          inputs:
+            version: 'latest'
+            docker: false
+            exitCode: 0
+            image: $(containerRegistryn)/$(imageRepository)
+            debug: true
+        - task: Bash@3
+          displayName: Trivy CLI
+          inputs:
+            targetType: 'inline'
+            script: |
+              # Write your commands here
+              mkdir $(sariflog)
+              export TRIVY_AUTH_URL=$(URL)
+              export TRIVY_USERNAME=$(USERNAME)
+              export TRIVY_PASSWORD=$(PASSWORD)
+              echo "[+] Fetching Trivy"
+              export TRIVYVERSION=$(git ls-remote --refs --sort="version:refname" --tags https://github.com/aquasecurity/trivy | cut -d/ -f3-|tail -n1 | sed -e 's/^.//')
+              echo "[+] Trivy Version:" ${TRIVYVERSION}
+              wget -nv --no-cache https://github.com/aquasecurity/trivy/releases/download/v${TRIVYVERSION}/trivy_${TRIVYVERSION}_Linux-64bit.deb
+              echo "[+] Installing Trivy"
+              sudo dpkg -i trivy_${TRIVYVERSION}_Linux-64bit.deb
+              echo "[+] Trivy Installed "${TRIVYVERSION}
+              echo "[+] Running Trivy"
+              echo "***Vulneability Assesment***"
+              echo "[+] Creating Trivy Vulnerabilities"
+              trivy --quiet image --format sarif -o $(sariflog)/Trivy_Vulnerabilities.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              echo "***License Inventory***"
+              echo "[+] Creating Trivy License Inventory" 
+              trivy --quiet image -f table --scanners license --license-full --exit-code 0 $(containerRegistryn)/$(imageRepository) > $(sariflog)/License_Report.txt
+              echo "***Docker Compliance Analysis***"
+              echo "[+] Creating Trivy Docker Compliance File" 
+              trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository) > $(sariflog)/CIS_Compliance_Report.txt
+              echo "***Dockerfile Analysis***"
+              echo "[+] Creating Dockerfile Compliance" 
+              trivy --quiet --format sarif -o $(sariflog)/Compliance_Dockerfile_Report.sarif config $(dockerfilePath)
+              echo "***SBOM Analysis***"
+              echo "[+] Creating Trivy SBOM JSON File" 
+              trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/SBOM_Cyclonedx_Report.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
+        - task: PublishPipelineArtifact@1
+          inputs:
+            targetPath: './$(sariflog)'
+            artifact: '$(sariflog)'
+            publishLocation: 'pipeline'
