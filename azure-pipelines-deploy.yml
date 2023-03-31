@@ -51,4 +51,4 @@ stages:
         DockerNamespace: '$(containerRegistry)'
         DockerRepository: '$(imageRepository)'
         DockerImageTag: '$(tag)'
-        AppSettings: '-port 3000'
+        AppSettings: '-port 8080'
