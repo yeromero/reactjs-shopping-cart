@@ -67,9 +67,6 @@ stages:
             targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
-        - task: Delay@1
-          inputs:
-            delayForMinutes: '2'
         - task: kooltrivy@999
           inputs:
             version: 'latest'
