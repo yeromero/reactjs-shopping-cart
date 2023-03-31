@@ -1,0 +1,50 @@
+# Checkov
+# Análisis de archivos Dockerfile
+# 
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  dockerRegistryServiceConnection: '26a65500-b05f-4a4c-a7dd-73a9e7a59dcb'
+  imageRepository: 'malevarrokart'
+  containerRegistryn: 'myacr21942.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+  vmImageName: 'ubuntu-latest'
+  sariflog: 'ImageAnalysisLogs'
+
+pool:
+  vmImage: $(vmImageName)
+
+stages:
+  - stage: CodeSecurityScan
+    displayName: Code Security Scan
+    jobs:
+      - job: Checkov
+        displayName: Checkov
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - task: Bash@3
+          displayName: 'Checkov CLI'
+          inputs:
+            targetType: 'inline'
+            script: |
+              echo 'Install Checkov'
+              pip3 install checkov
+              mkdir checkov-report
+              checkov -d . --framework dockerfile --output junitxml > ./checkov-report/TEST-checkov-report.xml
+        - task: PublishTestResults@2
+          displayName: 'Checkov Report'
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/TEST-checkov-report.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
+            mergeTestResults: true
+            testRunTitle: 'Checkov Report'
+            failTaskOnFailedTests: false
+            publishRunAttachments: true
