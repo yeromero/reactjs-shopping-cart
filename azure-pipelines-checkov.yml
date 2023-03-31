@@ -49,17 +49,6 @@ stages:
             targetType: 'inline'
             script: |
               checkov -d . --soft-fail --framework sca_package --bc-api-key $(API) --output junitxml > ./checkov-report/TEST-checkov-SCA-report.xml
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'myacr21942'
-            command: 'login'
-        - task: Bash@3
-          displayName: 'Checkov Full Analysis'
-          inputs:
-            targetType: 'inline'
-            script: |
-              checkov --docker-image 'myacr21942.azurecr.io/$(imageRepository)' --dockerfile-path $(dockerfilePath) --soft-fail --bc-api-key $(API)
-              #--output junitxml > ./checkov-report/TEST-checkov-full-report.xml
         - task: PublishTestResults@2
           displayName: 'Checkov Dockerfile Report'
           inputs:
