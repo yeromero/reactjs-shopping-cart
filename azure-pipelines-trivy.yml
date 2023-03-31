@@ -29,6 +29,17 @@ stages:
         pool:
           vmImage: $(vmImageName)
         steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'myacr21942'
+            command: 'login'
+        - task: trivy@1
+          inputs:
+            version: 'latest'
+            docker: false
+            exitCode: 0
+            image: $(containerRegistryn)/$(imageRepository)
+            debug: true
         - task: Bash@3
           inputs:
             targetType: 'inline'
@@ -61,20 +72,8 @@ stages:
               echo "***SBOM Analysis***"
               echo "[+] Creating Trivy SBOM JSON File" 
               trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/SBOM_Cyclonedx_Report.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
-              trivy image --exit-code 0 --format json --output /tmp/trivy-results.json --security-checks vuln,config,secret $(containerRegistryn)/$(imageRepository)
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'myacr21942'
-            command: 'login'
-        - task: trivy@1
-          inputs:
-            version: 'latest'
-            docker: false
-            exitCode: 0
-            image: $(containerRegistryn)/$(imageRepository)
-            debug: true
