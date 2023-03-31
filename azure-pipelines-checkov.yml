@@ -58,7 +58,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              checkov -d . --soft-fail --framework sca_image --bc-api-key --bc-api-key $(API)
+              checkov -d . --soft-fail --framework sca_image --bc-api-key $(API)
               #--output junitxml > ./checkov-report/TEST-checkov-full-report.xml
         - task: Bash@3
           displayName: 'Checkov Full Analysis'
