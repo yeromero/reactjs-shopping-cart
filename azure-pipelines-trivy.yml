@@ -60,7 +60,7 @@ stages:
               trivy --quiet --format sarif -o $(sariflog)/Compliance_Dockerfile.sarif config $(dockerfilePath)
               echo "***SBOM Analysis***"
               echo "[+] Creating Trivy SBOM JSON File" 
-              trivy --quiet image --list-all-pkgs true --scanners vuln --format cyclonedx --output $(sariflog)/sbom_cyclonedx_result.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/sbom_cyclonedx_result.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: './$(sariflog)'
