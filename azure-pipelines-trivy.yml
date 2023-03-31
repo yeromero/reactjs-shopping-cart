@@ -51,13 +51,16 @@ stages:
               trivy --quiet image --format sarif -o $(sariflog)/reportvuln.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository)
               echo "***License Inventory***"
               echo "[+] Show Trivy License Inventory" 
-              trivy --quiet image --format sarif -o $(sariflog)/reportlic.sarif --scanners license --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              trivy --quiet image -f table --scanners license --license-full --exit-code 0 $(containerRegistryn)/$(imageRepository) > $(sariflog)/ReportLicense.txt
               echo "***Docker Compliance Analysis***"
               echo "[+] Show Trivy Docker Compliance File" 
-              trivy --quiet image --format sarif -o $(sariflog)/reportCompli.sarif --compliance docker-cis $(containerRegistryn)/$(imageRepository)
+              trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository) > CIS_Compliance_Report.txt
               echo "***Dockerfile Analysis***"
               echo "[+] Show Dockerfile Compliance" 
-              trivy --quiet --format sarif -o $(sariflog)/reportfilecom.sarif config $(dockerfilePath)
+              trivy --quiet --format sarif -o $(sariflog)/Compliance_Dockerfile.sarif config $(dockerfilePath)
+              echo "***SBOM Analysis***"
+              echo "[+] Creating Trivy SBOM JSON File" 
+              trivy --quiet image --scanners vuln --format cyclonedx --output $(sariflog)/sbom_cyclonedx_result.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: './$(sariflog)'
