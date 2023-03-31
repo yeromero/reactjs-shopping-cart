@@ -67,10 +67,14 @@ stages:
             targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
-        - task: kooltrivy@999
+        - task: Docker@2
+          inputs:
+            containerRegistry: '$(containerRegistryn)'
+            command: 'login'
+        - task: trivy@1
           inputs:
             version: 'latest'
             docker: false
             exitCode: 0
             image: $(containerRegistryn)/$(imageRepository)
-
+            debug: true
