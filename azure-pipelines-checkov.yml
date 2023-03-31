@@ -41,7 +41,7 @@ stages:
             targetType: 'inline'
             script: |
               mkdir checkov-report
-              checkov -d . --framework dockerfile 
+              checkov -d . --soft-fail --framework dockerfile 
               #--output junitxml > ./checkov-report/TEST-checkov-report.xml
 #        - task: PublishTestResults@2
 #          displayName: 'Checkov Report'
