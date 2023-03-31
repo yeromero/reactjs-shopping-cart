@@ -41,14 +41,15 @@ stages:
             targetType: 'inline'
             script: |
               mkdir checkov-report
-              checkov -d . --framework dockerfile --output junitxml > ./checkov-report/TEST-checkov-report.xml
-        - task: PublishTestResults@2
-          displayName: 'Checkov Report'
-          inputs:
-            testResultsFormat: 'JUnit'
-            testResultsFiles: '**/TEST-checkov-report.xml'
-            searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
-            mergeTestResults: true
-            testRunTitle: 'Checkov Report'
-            failTaskOnFailedTests: false
-            publishRunAttachments: true
+              checkov -d . --framework dockerfile 
+              #--output junitxml > ./checkov-report/TEST-checkov-report.xml
+#        - task: PublishTestResults@2
+#          displayName: 'Checkov Report'
+#          inputs:
+#            testResultsFormat: 'JUnit'
+#            testResultsFiles: '**/TEST-checkov-report.xml'
+#            searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
+#            mergeTestResults: true
+#            testRunTitle: 'Checkov Report'
+#            failTaskOnFailedTests: false
+#            publishRunAttachments: true
