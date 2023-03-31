@@ -72,7 +72,7 @@ stages:
             testResultsFormat: 'JUnit'
             testResultsFiles: '**/TEST-*.xml'
             searchFolder: '$(System.DefaultWorkingDirectory)/$(sariflog)'
-            mergeTestResults: false
+            mergeTestResults: true
             testRunTitle: 'Trivy CLI Report'
             failTaskOnFailedTests: false
             publishRunAttachments: true
