@@ -57,7 +57,7 @@ stages:
               trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository) > $(sariflog)/CIS_Compliance_Report.txt
               echo "***Dockerfile Analysis***"
               echo "[+] Creating Dockerfile Compliance" 
-              trivy --quiet --format template --template "@/usr/local/share/trivy/templates/junit.tpl" -o $(sariflog)/TEST-Compliance_Dockerfile_Report.sarif config $(dockerfilePath)
+              trivy --quiet --format template --template "@/usr/local/share/trivy/templates/junit.tpl" -o $(sariflog)/TEST-Compliance_Dockerfile_Report.xml config $(dockerfilePath)
               echo "***SBOM Analysis***"
               echo "[+] Creating Trivy SBOM JSON File" 
               trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/SBOM_Cyclonedx_Report.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
@@ -72,7 +72,7 @@ stages:
             testResultsFormat: 'JUnit'
             testResultsFiles: '**/TEST-*.xml'
             searchFolder: '$(System.DefaultWorkingDirectory)/$(sariflog)'
-            mergeTestResults: true
+            mergeTestResults: false
             testRunTitle: 'Trivy CLI Report'
             failTaskOnFailedTests: false
             publishRunAttachments: true
