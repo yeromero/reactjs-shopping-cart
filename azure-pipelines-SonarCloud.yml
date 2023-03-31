@@ -34,9 +34,11 @@ stages:
           inputs:
             SonarCloud: 'SonarCloud'
             organization: 'malevarro-devsecops'
-            scannerMode: 'MSBuild'
-            projectKey: 'malevarro_reactjs-shopping-cart2'
-            projectName: 'reactjs-shopping-cart'
+            scannerMode: 'CLI'
+            configMode: 'manual'
+            cliProjectKey: 'malevarro_reactjs-shopping-cart2'
+            cliProjectName: 'reactjs-shopping-cart'
+            cliSources: '.'
         - task: SonarCloudAnalyze@1
         - task: SonarCloudPublish@1
           inputs:
