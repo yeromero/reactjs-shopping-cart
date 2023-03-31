@@ -47,20 +47,20 @@ stages:
               echo "[+] Trivy Installed "${TRIVYVERSION}
               echo "[+] Running Trivy"
               echo "***Vulneability Assesment***"
-              echo "[+] Show Trivy Results"
-              trivy --quiet image --format sarif -o $(sariflog)/reportvuln.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              echo "[+] Creating Trivy Vulnerabilities"
+              trivy --quiet image --format sarif -o $(sariflog)/Trivy_Vulnerabilities.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository)
               echo "***License Inventory***"
-              echo "[+] Show Trivy License Inventory" 
-              trivy --quiet image -f table --scanners license --license-full --exit-code 0 $(containerRegistryn)/$(imageRepository) > $(sariflog)/ReportLicense.txt
+              echo "[+] Creating Trivy License Inventory" 
+              trivy --quiet image -f table --scanners license --license-full --exit-code 0 $(containerRegistryn)/$(imageRepository) > $(sariflog)/License_Report.txt
               echo "***Docker Compliance Analysis***"
-              echo "[+] Show Trivy Docker Compliance File" 
-              trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository) > CIS_Compliance_Report.txt
+              echo "[+] Creating Trivy Docker Compliance File" 
+              trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository) > $(sariflog)/CIS_Compliance_Report.txt
               echo "***Dockerfile Analysis***"
-              echo "[+] Show Dockerfile Compliance" 
-              trivy --quiet --format sarif -o $(sariflog)/Compliance_Dockerfile.sarif config $(dockerfilePath)
+              echo "[+] Creating Dockerfile Compliance" 
+              trivy --quiet --format sarif -o $(sariflog)/Compliance_Dockerfile_Report.sarif config $(dockerfilePath)
               echo "***SBOM Analysis***"
               echo "[+] Creating Trivy SBOM JSON File" 
-              trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/sbom_cyclonedx_result.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/SBOM_Cyclonedx_Report.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: './$(sariflog)'
