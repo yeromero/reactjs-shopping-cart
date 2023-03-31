@@ -15,7 +15,7 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
-  sariflog: 'CodeAnalysisLogs'
+  sariflog: 'ImageAnalysisLogs'
 
 pool:
   vmImage: $(vmImageName)
@@ -30,6 +30,7 @@ stages:
           vmImage: $(vmImageName)
         steps:
         - task: Bash@3
+          displayName: 'Trivy CLI'
           inputs:
             targetType: 'inline'
             script: |
@@ -65,3 +66,13 @@ stages:
             targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
+        - task: PublishTestResults@2
+          displayName: 'Trivy CLI Report'
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/TEST-*.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)/$(sariflog)'
+            mergeTestResults: true
+            testRunTitle: 'Trivy CLI Report'
+            failTaskOnFailedTests: true
+            publishRunAttachements: true
