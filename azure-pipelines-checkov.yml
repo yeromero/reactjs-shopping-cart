@@ -30,12 +30,16 @@ stages:
           vmImage: $(vmImageName)
         steps:
         - task: Bash@3
-          displayName: 'Checkov CLI'
+          displayName: 'Install Checkov CLI'
           inputs:
             targetType: 'inline'
             script: |
               echo 'Install Checkov'
               pip3 install checkov
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
               mkdir checkov-report
               checkov -d . --framework dockerfile --output junitxml > ./checkov-report/TEST-checkov-report.xml
         - task: PublishTestResults@2
