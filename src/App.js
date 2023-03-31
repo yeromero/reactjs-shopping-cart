@@ -7,7 +7,7 @@ const App = () => {
         <div className="container">
             <div className="row">
                 <div className="col-md-12">
-                    <h1>React+Redux Shopping Cart Example - Deploy1</h1>
+                    <h1>React+Redux Shopping Cart Example</h1>
                 </div>
             </div>
             <div className="row">
@@ -22,6 +22,7 @@ const App = () => {
             <footer>
                 <small>
                     made by <a href="https://twitter.com/krzysu">Kris Urbas</a>, source code available on <a href="https://github.com/krzysu/reactjs-shopping-cart">github</a>
+                    Publicado por Malevarro (R)
                 </small>
             </footer>
         </div>
