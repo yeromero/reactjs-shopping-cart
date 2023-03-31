@@ -69,7 +69,7 @@ stages:
             publishLocation: 'pipeline'
         - task: Docker@2
           inputs:
-            containerRegistry: '$(containerRegistryn)'
+            containerRegistry: 'myacr21942'
             command: 'login'
         - task: trivy@1
           inputs:
