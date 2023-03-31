@@ -1,5 +1,5 @@
 # Full Scan
-# Pipeline para realizar análisis de código fuente, build de la imágen y análisis de la imagen de un contenedor
+# Pipeline para realizar análisis de código fuente, build de la imagen y análisis de la imagen de un contenedor
 # 
 
 trigger:
@@ -15,19 +15,20 @@ variables:
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
+  sariflog: 'ImageAnalysisLogs'
 
 pool:
   vmImage: $(vmImageName)
 
 stages:
 
-# Analisis del codigo fuente
+# Análisis del código fuente
 
   - stage: CodeSecurityScan
     displayName: Code Security Scan
     jobs:
 
-      # Analisis con Mend
+      # Análisis con Mend
 
       - job: Mend
         displayName: Mend
@@ -39,7 +40,7 @@ stages:
             cwd: '$(System.DefaultWorkingDirectory)'
             projectName: 'reactjs-shopping-cart'
       
-      # Analisis con SonarCloud
+      # Análisis con SonarCloud
 
       - job: SonarCloud
         displayName: SonarCloud
@@ -62,7 +63,7 @@ stages:
           inputs:
             pollingTimeoutSec: '300'
 
-# Creacion de imagen de contenedor
+# Creación de imagen de contenedor
 
 #- stage: Build
 #  displayName: Build and push stage
@@ -82,13 +83,13 @@ stages:
 #        tags: |
 #          $(tag)
 
-# Analisis de imagen de contenedor
+# Análisis de imagen de contenedor
 
   - stage: ImageSecurityScan
     displayName: Image Security Analysis
     jobs:
     
-      # Analisis con Snyk
+      # Análisis con Snyk
 
       - job: Snyk
         displayName: Snyk
@@ -108,7 +109,7 @@ stages:
             monitorWhen: 'always'
             failOnIssues: false
       
-      # Analisis con Trivy
+      # Análisis con Trivy
 
       - job: Trivy
         displayName: Trivy
