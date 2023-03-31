@@ -37,8 +37,8 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-  - job: Build
-    displayName: Build
+  - job: Deploy
+    displayName: Deploy
     pool:
       vmImage: $(vmImageName)
     steps:
