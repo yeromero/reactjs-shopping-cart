@@ -67,3 +67,13 @@ stages:
             targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
+        - task: Delay@1
+          inputs:
+            delayForMinutes: '2'
+        - task: kooltrivy@999
+          inputs:
+            version: 'latest'
+            docker: false
+            exitCode: 0
+            image: $(containerRegistryn)/$(imageRepository)
+
