@@ -49,6 +49,13 @@ stages:
             targetType: 'inline'
             script: |
               checkov -d . --soft-fail --framework sca_package --bc-api-key $(API) --output junitxml > ./checkov-report/TEST-checkov-SCA-report.xml
+        - task: Bash@3
+          displayName: 'Checkov Full Analysis'
+          inputs:
+            targetType: 'inline'
+            script: |
+              checkov -d . --soft-fail --framework all --bc-api-key $(API) --docker-image $(malevarrokart) --dockerfile-path . 
+              #--output junitxml > ./checkov-report/TEST-checkov-full-report.xml
         - task: PublishTestResults@2
           displayName: 'Checkov Dockerfile Report'
           inputs:
