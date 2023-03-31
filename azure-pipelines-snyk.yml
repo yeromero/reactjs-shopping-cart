@@ -24,8 +24,8 @@ stages:
   - stage: SecurityScan
     displayName: SecurityAnalysis
     jobs:
-      - job: Trivy
-        displayName: Trivy
+      - job: Snyk
+        displayName: Snyk
         pool:
           vmImage: $(vmImageName)
         steps:
@@ -37,7 +37,7 @@ stages:
           inputs:
             serviceConnectionEndpoint: 'SnykApp'
             testType: 'container'
-            dockerImageName: '$(imageRepository)'
+            dockerImageName: '$(containerRegistryn)/$(imageRepository)'
             dockerfilePath: '$(dockerfilePath)'
             monitorWhen: 'always'
             failOnIssues: false
