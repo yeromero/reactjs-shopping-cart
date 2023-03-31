@@ -152,7 +152,7 @@ stages:
           inputs:
             serviceConnectionEndpoint: 'SnykApp'
             testType: 'container'
-            dockerImageName: '$(containerRegistryn)/$(imageRepository)'
+            dockerImageName: '$(containerRegistryn)/$(imageRepository):$(tag)'
             dockerfilePath: '$(dockerfilePath)'
             monitorWhen: 'always'
             failOnIssues: false
@@ -173,7 +173,7 @@ stages:
             version: 'latest'
             docker: false
             exitCode: 0
-            image: $(containerRegistryn)/$(imageRepository)
+            image: $(containerRegistryn)/$(imageRepository):$(tag)
             debug: true
         - task: Bash@3
           displayName: Trivy CLI
@@ -195,19 +195,19 @@ stages:
               echo "[+] Running Trivy"
               echo "***Vulneability Assesment***"
               echo "[+] Creating Trivy Vulnerabilities"
-              trivy --quiet image --format sarif -o $(sariflog)/Trivy_Vulnerabilities.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              trivy --quiet image --format sarif -o $(sariflog)/Trivy_Vulnerabilities.sarif --exit-code 0 $(containerRegistryn)/$(imageRepository):$(tag)
               echo "***License Inventory***"
               echo "[+] Creating Trivy License Inventory" 
-              trivy --quiet image -f table --scanners license --license-full --exit-code 0 $(containerRegistryn)/$(imageRepository) > $(sariflog)/License_Report.txt
+              trivy --quiet image -f table --scanners license --license-full --exit-code 0 $(containerRegistryn)/$(imageRepository):$(tag) > $(sariflog)/License_Report.txt
               echo "***Docker Compliance Analysis***"
               echo "[+] Creating Trivy Docker Compliance File" 
-              trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository) > $(sariflog)/CIS_Compliance_Report.txt
+              trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository):$(tag) > $(sariflog)/CIS_Compliance_Report.txt
               echo "***Dockerfile Analysis***"
               echo "[+] Creating Dockerfile Compliance" 
               trivy --quiet --format sarif -o $(sariflog)/Compliance_Dockerfile_Report.sarif config $(dockerfilePath)
               echo "***SBOM Analysis***"
               echo "[+] Creating Trivy SBOM JSON File" 
-              trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/SBOM_Cyclonedx_Report.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/SBOM_Cyclonedx_Report.json --exit-code 0 $(containerRegistryn)/$(imageRepository):$(tag)
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: './$(sariflog)'
