@@ -20,8 +20,8 @@ pool:
   vmImage: $(vmImageName)
 
 stages:
-  - stage: SecurityScan
-    displayName: SecurityAnalysis
+  - stage: CodeSecurityScan
+    displayName: Code Security Scan
     jobs:
       - job: Mend
         displayName: Mend

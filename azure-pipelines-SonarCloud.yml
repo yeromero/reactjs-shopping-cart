@@ -1,0 +1,43 @@
+# SonarCloud
+# Análisis de código fuente con SonarCloud
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  dockerRegistryServiceConnection: '26a65500-b05f-4a4c-a7dd-73a9e7a59dcb'
+  imageRepository: 'malevarrokart'
+  containerRegistryn: 'myacr21942.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+  vmImageName: 'ubuntu-latest'
+
+pool:
+  vmImage: $(vmImageName)
+
+stages:
+  - stage: CodeSecurityScan
+    displayName: Code Security Analysis
+    jobs:
+      - job: SonarCloud
+        displayName: SonarCloud
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - checkout: self
+          fetchDepth: 0
+        - task: SonarCloudPrepare@1
+          inputs:
+            SonarCloud: 'SonarCloud'
+            organization: 'malevarro-devsecops'
+            scannerMode: 'MSBuild'
+            projectKey: 'malevarro_reactjs-shopping-cart2'
+            projectName: 'reactjs-shopping-cart'
+        - task: SonarCloudAnalyze@1
+        - task: SonarCloudPublish@1
+          inputs:
+            pollingTimeoutSec: '300'
