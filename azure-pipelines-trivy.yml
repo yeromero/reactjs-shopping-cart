@@ -61,6 +61,7 @@ stages:
               echo "***SBOM Analysis***"
               echo "[+] Creating Trivy SBOM JSON File" 
               trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/SBOM_Cyclonedx_Report.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              trivy image --exit-code 1 --format json --output /tmp/trivy-results.json --security-checks vuln,config,secret $(containerRegistryn)/$(imageRepository)
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: './$(sariflog)'
