@@ -70,9 +70,19 @@ stages:
           displayName: 'Trivy CLI Vulnerabilities Report'
           inputs:
             testResultsFormat: 'JUnit'
-            testResultsFiles: '**/TEST-*.xml'
+            testResultsFiles: '**/TEST-Trivy_Vulnerabilities.xml'
             searchFolder: '$(System.DefaultWorkingDirectory)/$(sariflog)'
             mergeTestResults: true
-            testRunTitle: 'Trivy CLI Report'
+            testRunTitle: 'Trivy CLI Vulnerabilities Report'
+            failTaskOnFailedTests: false
+            publishRunAttachments: true
+        - task: PublishTestResults@2
+          displayName: 'Trivy CLI Compliance Report'
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/TEST-Compliance_Dockerfile_Report.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)/$(sariflog)'
+            mergeTestResults: true
+            testRunTitle: 'Trivy CLI Compliance Report'
             failTaskOnFailedTests: false
             publishRunAttachments: true
