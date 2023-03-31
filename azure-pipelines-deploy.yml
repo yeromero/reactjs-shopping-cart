@@ -46,6 +46,7 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: AzureRmWebAppDeployment@4
+      displayName: Deploy Web App
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: 'AzureVS'
@@ -55,3 +56,9 @@ stages:
         DockerRepository: '$(imageRepository)'
         DockerImageTag: '$(tag)'
         AppSettings: '-port 3000'
+    - task: AzureAppServiceManage@0
+      displayName: Restart App Service
+      inputs:
+        azureSubscription: 'AzureVS'
+        Action: 'Restart Azure App Service'
+        WebAppName: 'myk8srun-21942'
