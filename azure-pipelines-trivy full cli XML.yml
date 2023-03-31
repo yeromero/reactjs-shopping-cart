@@ -67,12 +67,12 @@ stages:
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
         - task: PublishTestResults@2
-          displayName: 'Trivy CLI Report'
+          displayName: 'Trivy CLI Vulnerabilities Report'
           inputs:
             testResultsFormat: 'JUnit'
-            testResultsFiles: '**/TEST-*.xml'
+            testResultsFiles: '**/TEST-Trivy_Vulnerabilities.xml'
             searchFolder: '$(System.DefaultWorkingDirectory)/$(sariflog)'
-            mergeTestResults: false
+            mergeTestResults: true
             testRunTitle: 'Trivy CLI Report'
             failTaskOnFailedTests: false
             publishRunAttachments: true
