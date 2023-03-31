@@ -66,3 +66,8 @@ stages:
             targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
+        - task: trivy@1
+          inputs:
+            version: 'latest'
+            docker: false
+            image: '$(containerRegistryn)/$(imageRepository)'
