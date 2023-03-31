@@ -1,5 +1,5 @@
-# Trivy
-# Análisis básico de un contenedor con la herramienta de Trivy
+# Snyk
+# Análisis básico de un contenedor con la herramienta de Snyk
 # 
 
 trigger:
