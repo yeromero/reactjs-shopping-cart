@@ -58,14 +58,13 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              checkov -d . --soft-fail --framework sca_image --bc-api-key $(API)
-              #--output junitxml > ./checkov-report/TEST-checkov-full-report.xml
+              checkov -d . --soft-fail --framework sca_image --bc-api-key $(API) --output junitxml > ./checkov-report/TEST-checkov-SCAI-report.xml
         - task: Bash@3
           displayName: 'Checkov Full Analysis'
           inputs:
             targetType: 'inline'
             script: |
-              checkov --docker-image $(imageRepository) --dockerfile-path $(dockerfilePath) --soft-fail --bc-api-key $(API)
+              checkov --docker-image $(containerRegistryn)/$(imageRepository) --dockerfile-path $(dockerfilePath) --soft-fail --bc-api-key $(API)
               #--output junitxml > ./checkov-report/TEST-checkov-full-report.xml
         - task: PublishTestResults@2
           displayName: 'Checkov Dockerfile Report'
@@ -73,7 +72,7 @@ stages:
             testResultsFormat: 'JUnit'
             testResultsFiles: '**/TEST-checkov-IaC-report.xml'
             searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
-            mergeTestResults: true
+            mergeTestResults: false
             testRunTitle: 'Checkov Dockerfile Report'
             failTaskOnFailedTests: false
             publishRunAttachments: true
@@ -83,7 +82,17 @@ stages:
             testResultsFormat: 'JUnit'
             testResultsFiles: '**/TEST-checkov-SCA-report.xml'
             searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
-            mergeTestResults: true
+            mergeTestResults: false
             testRunTitle: 'Checkov SCA Report'
+            failTaskOnFailedTests: false
+            publishRunAttachments: true
+        - task: PublishTestResults@2
+          displayName: 'Checkov SCA Image Report'
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/TEST-checkov-SCAI-report.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
+            mergeTestResults: false
+            testRunTitle: 'Checkov SCA Image Report'
             failTaskOnFailedTests: false
             publishRunAttachments: true
