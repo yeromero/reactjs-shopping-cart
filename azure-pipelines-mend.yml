@@ -1,0 +1,34 @@
+# Mend (WhiteSource)
+# Análisis del código con la ayuda de Mend
+# 
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  dockerRegistryServiceConnection: '26a65500-b05f-4a4c-a7dd-73a9e7a59dcb'
+  imageRepository: 'malevarrokart'
+  containerRegistryn: 'myacr21942.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+  vmImageName: 'ubuntu-latest'
+
+pool:
+  vmImage: $(vmImageName)
+
+stages:
+  - stage: SecurityScan
+    displayName: SecurityAnalysis
+    jobs:
+      - job: Mend
+        displayName: Mend
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - task: WhiteSource@21
+          inputs:
+            cwd: '$(System.DefaultWorkingDirectory)'
+            projectName: 'reactjs-shopping-cart'
