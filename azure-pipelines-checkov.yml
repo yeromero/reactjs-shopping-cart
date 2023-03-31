@@ -36,20 +36,36 @@ stages:
             script: |
               echo 'Install Checkov'
               pip3 install checkov
+              mkdir checkov-report
         - task: Bash@3
-          displayName: 'Checkov Analysis'
+          displayName: 'Checkov Dockerfile Analysis'
           inputs:
             targetType: 'inline'
             script: |
-              mkdir checkov-report
-              checkov -d . --soft-fail --framework dockerfile --output junitxml > ./checkov-report/TEST-checkov-report.xml
+              checkov -d . --soft-fail --framework dockerfile --output junitxml > ./checkov-report/TEST-checkov-Dockerfile-report.xml
+        - task: Bash@3
+          displayName: 'Checkov SCA Analysis'
+          inputs:
+            targetType: 'inline'
+            script: |
+              checkov -d . --soft-fail --framework sca_package --bc-api-key $(API) --output junitxml > ./checkov-report/TEST-checkov-SCA-report.xml
         - task: PublishTestResults@2
-          displayName: 'Checkov Report'
+          displayName: 'Checkov Dockerfile Report'
           inputs:
             testResultsFormat: 'JUnit'
-            testResultsFiles: '**/TEST-checkov-report.xml'
+            testResultsFiles: '**/TEST-checkov-Dockerfile-report'
             searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
             mergeTestResults: true
-            testRunTitle: 'Checkov Report'
+            testRunTitle: 'Checkov Dockerfile Report'
+            failTaskOnFailedTests: false
+            publishRunAttachments: true
+        - task: PublishTestResults@2
+          displayName: 'Checkov SCA Report'
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/TEST-checkov-SCA-report.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
+            mergeTestResults: true
+            testRunTitle: 'Checkov SCA Report'
             failTaskOnFailedTests: false
             publishRunAttachments: true
