@@ -213,3 +213,21 @@ stages:
             targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
+  - stage: DeployWebApp
+    displayName: Deploy Web App
+    jobs:
+    - job: Deploy
+      displayName: Deploy
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+      - task: AzureRmWebAppDeployment@4
+        inputs:
+          ConnectionType: 'AzureRM'
+          azureSubscription: 'AzureVS'
+          appType: 'webAppContainer'
+          WebAppName: 'myk8srun-21942'
+          DockerNamespace: '$(containerRegistry)'
+          DockerRepository: '$(imageRepository)'
+          DockerImageTag: '$(tag)'
+          AppSettings: '-port 3000'
