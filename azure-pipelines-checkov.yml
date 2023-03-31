@@ -42,7 +42,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              checkov -d . --soft-fail --framework dockerfile --bc-api-key $(API) --output junitxml > ./checkov-report/TEST-checkov-Dockerfile-report.xml
+              checkov -d . --soft-fail --framework all --output junitxml > ./checkov-report/TEST-checkov-IaC-report.xml
         - task: Bash@3
           displayName: 'Checkov SCA Analysis'
           inputs:
@@ -58,13 +58,13 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              checkov --docker-image $(containerRegistryn)/$(imageRepository) --dockerfile-path $(dockerfilePath) --soft-fail --framework all --bc-api-key $(API)
+              checkov --docker-image $(containerRegistryn)/$(imageRepository) --dockerfile-path $(dockerfilePath) --soft-fail --bc-api-key $(API)
               #--output junitxml > ./checkov-report/TEST-checkov-full-report.xml
         - task: PublishTestResults@2
           displayName: 'Checkov Dockerfile Report'
           inputs:
             testResultsFormat: 'JUnit'
-            testResultsFiles: '**/TEST-checkov-Dockerfile-report.xml'
+            testResultsFiles: '**/TEST-checkov-IaC-report.xml'
             searchFolder: '$(System.DefaultWorkingDirectory)/checkov-report'
             mergeTestResults: true
             testRunTitle: 'Checkov Dockerfile Report'
