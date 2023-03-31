@@ -1,6 +1,6 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+# Full Scan
+# Pipeline para realizar análisis de código fuente, build de la imágen y análisis de la imagen de un contenedor
+# 
 
 trigger:
 - master
@@ -20,9 +20,15 @@ pool:
   vmImage: $(vmImageName)
 
 stages:
+
+# Analisis del codigo fuente
+
   - stage: CodeSecurityScan
     displayName: Code Security Scan
     jobs:
+
+      # Analisis con Mend
+
       - job: Mend
         displayName: Mend
         pool:
@@ -32,6 +38,9 @@ stages:
           inputs:
             cwd: '$(System.DefaultWorkingDirectory)'
             projectName: 'reactjs-shopping-cart'
+      
+      # Analisis con SonarCloud
+
       - job: SonarCloud
         displayName: SonarCloud
         pool:
@@ -43,13 +52,18 @@ stages:
           inputs:
             SonarCloud: 'SonarCloud'
             organization: 'malevarro-devsecops'
-            scannerMode: 'MSBuild'
-            projectKey: 'malevarro_reactjs-shopping-cart2'
-            projectName: 'reactjs-shopping-cart'
+            scannerMode: 'CLI'
+            configMode: 'manual'
+            cliProjectKey: 'malevarro_reactjs-shopping-cart2'
+            cliProjectName: 'reactjs-shopping-cart'
+            cliSources: '.'
         - task: SonarCloudAnalyze@1
         - task: SonarCloudPublish@1
           inputs:
             pollingTimeoutSec: '300'
+
+# Creacion de imagen de contenedor
+
 #- stage: Build
 #  displayName: Build and push stage
 #  jobs:
@@ -68,9 +82,14 @@ stages:
 #        tags: |
 #          $(tag)
 
+# Analisis de imagen de contenedor
+
   - stage: ImageSecurityScan
     displayName: Image Security Analysis
     jobs:
+    
+      # Analisis con Snyk
+
       - job: Snyk
         displayName: Snyk
         pool:
@@ -88,6 +107,9 @@ stages:
             dockerfilePath: '$(dockerfilePath)'
             monitorWhen: 'always'
             failOnIssues: false
+      
+      # Analisis con Trivy
+
       - job: Trivy
         displayName: Trivy
         pool:
