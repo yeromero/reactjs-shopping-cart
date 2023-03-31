@@ -39,4 +39,3 @@ stages:
             docker: false
             exitCode: 0
             image: $(containerRegistryn)/$(imageRepository)
-            debug: true
