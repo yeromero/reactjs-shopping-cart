@@ -70,7 +70,7 @@ stages:
           displayName: 'Trivy CLI Vulnerabilities Report'
           inputs:
             testResultsFormat: 'JUnit'
-            testResultsFiles: '**/TEST-Trivy_Vulnerabilities.xml'
+            testResultsFiles: '**/TEST-*.xml'
             searchFolder: '$(System.DefaultWorkingDirectory)/$(sariflog)'
             mergeTestResults: true
             testRunTitle: 'Trivy CLI Report'
