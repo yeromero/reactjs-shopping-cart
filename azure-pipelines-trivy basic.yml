@@ -1,0 +1,42 @@
+# Trivy
+# Análisis básico de un contenedor con la herramienta de Trivy
+# 
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  dockerRegistryServiceConnection: '26a65500-b05f-4a4c-a7dd-73a9e7a59dcb'
+  imageRepository: 'malevarrokart'
+  containerRegistryn: 'myacr21942.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+  vmImageName: 'ubuntu-latest'
+  sariflog: 'CodeAnalysisLogs'
+
+pool:
+  vmImage: $(vmImageName)
+
+stages:
+  - stage: SecurityScan
+    displayName: SecurityAnalysis
+    jobs:
+      - job: Trivy
+        displayName: Trivy
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'myacr21942'
+            command: 'login'
+        - task: trivy@1
+          inputs:
+            version: 'latest'
+            docker: false
+            exitCode: 0
+            image: $(containerRegistryn)/$(imageRepository)
+            debug: true
