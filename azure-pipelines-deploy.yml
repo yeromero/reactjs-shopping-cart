@@ -37,6 +37,9 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+- stage: DeployWebApp
+  displayName: Deploy Web App
+  jobs:
   - job: Deploy
     displayName: Deploy
     pool:
