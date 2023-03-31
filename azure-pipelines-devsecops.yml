@@ -10,12 +10,7 @@ resources:
 
 variables:
   dockerRegistryServiceConnection: '26a65500-b05f-4a4c-a7dd-73a9e7a59dcb'
-  imageRepository: 'malevarrokart'
-  containerRegistryn: 'myacr21942.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: '$(Build.BuildId)'
-  vmImageName: 'ubuntu-latest'
-  sariflog: 'ImageAnalysisLogs'
 
 pool:
   vmImage: $(vmImageName)
@@ -146,7 +141,7 @@ stages:
         steps:
         - task: Docker@2
           inputs:
-            containerRegistry: 'myacr21942'
+            containerRegistry: '$(containerRegistrys)'
             command: 'login'
         - task: SnykSecurityScan@1
           inputs:
@@ -166,7 +161,7 @@ stages:
         steps:
         - task: Docker@2
           inputs:
-            containerRegistry: 'myacr21942'
+            containerRegistry: '$(containerRegistrys)'
             command: 'login'
         - task: trivy@1
           inputs:
@@ -213,6 +208,9 @@ stages:
             targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
+
+#Publicando la aplicacion en Azure
+
   - stage: DeployWebApp
     displayName: Deploy Web App
     jobs:
@@ -228,7 +226,7 @@ stages:
           azureSubscription: 'AzureVS'
           appType: 'webAppContainer'
           WebAppName: 'myk8srun-21942'
-          DockerNamespace: '$(containerRegistry)'
+          DockerNamespace: '$(containerRegistryn)'
           DockerRepository: '$(imageRepository)'
           DockerImageTag: '$(tag)'
           AppSettings: '-port 3000'
