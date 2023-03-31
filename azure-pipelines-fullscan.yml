@@ -173,7 +173,7 @@ stages:
             version: 'latest'
             docker: false
             exitCode: 0
-            image: $(containerRegistryn)/$(imageRepository):$(Build.BuildId):$(tag)
+            image: $(containerRegistryn)/$(imageRepository):$(tag)
             debug: true
         - task: Bash@3
           displayName: Trivy CLI
