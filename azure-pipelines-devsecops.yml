@@ -33,7 +33,7 @@ stages:
         - task: WhiteSource@21
           inputs:
             cwd: '$(System.DefaultWorkingDirectory)'
-            projectName: 'reactjs-shopping-cart'
+            projectName: '$(MendProj)'
       
       # Análisis con SonarCloud
 
@@ -47,11 +47,11 @@ stages:
         - task: SonarCloudPrepare@1
           inputs:
             SonarCloud: 'SonarCloud'
-            organization: 'malevarro-devsecops'
+            organization: '$(SonarOrg)'
             scannerMode: 'CLI'
             configMode: 'manual'
-            cliProjectKey: 'malevarro_reactjs-shopping-cart2'
-            cliProjectName: 'reactjs-shopping-cart'
+            cliProjectKey: '$(SonarProjKey)'
+            cliProjectName: '$(SonarProj)'
             cliSources: '.'
         - task: SonarCloudAnalyze@1
         - task: SonarCloudPublish@1
@@ -160,6 +160,7 @@ stages:
           vmImage: $(vmImageName)
         steps:
         - task: Docker@2
+          displayName: 'Registry Login'
           inputs:
             containerRegistry: '$(containerRegistrys)'
             command: 'login'
@@ -225,7 +226,7 @@ stages:
           ConnectionType: 'AzureRM'
           azureSubscription: 'AzureVS'
           appType: 'webAppContainer'
-          WebAppName: 'myk8srun-21942'
+          WebAppName: '$(WebAppSvc)'
           DockerNamespace: '$(containerRegistryn)'
           DockerRepository: '$(imageRepository)'
           DockerImageTag: '$(tag)'
@@ -235,4 +236,4 @@ stages:
         inputs:
           azureSubscription: 'AzureVS'
           Action: 'Restart Azure App Service'
-          WebAppName: 'myk8srun-21942'
+          WebAppName: '$(WebAppSvc)'
