@@ -48,7 +48,7 @@ stages:
               echo "[+] Running Trivy"
               echo "***Vulneability Assesment***"
               echo "[+] Creating Trivy Vulnerabilities"
-              trivy --quiet image --format template --template "@contrib/junit.tpl" -o $(sariflog)/TEST-Trivy_Vulnerabilities.xml --exit-code 0 $(containerRegistryn)/$(imageRepository)
+              trivy --quiet image --format template --template "@/usr/local/share/trivy/templates/junit.tpl" -o $(sariflog)/TEST-Trivy_Vulnerabilities.xml --exit-code 0 $(containerRegistryn)/$(imageRepository)
               echo "***License Inventory***"
               echo "[+] Creating Trivy License Inventory" 
               trivy --quiet image -f table --scanners license --license-full --exit-code 0 $(containerRegistryn)/$(imageRepository) > $(sariflog)/License_Report.txt
@@ -57,7 +57,7 @@ stages:
               trivy --quiet image -f table --compliance docker-cis $(containerRegistryn)/$(imageRepository) > $(sariflog)/CIS_Compliance_Report.txt
               echo "***Dockerfile Analysis***"
               echo "[+] Creating Dockerfile Compliance" 
-              trivy --quiet --format template --template "@contrib/junit.tpl" -o $(sariflog)/TEST-Compliance_Dockerfile_Report.sarif config $(dockerfilePath)
+              trivy --quiet --format template --template "@/usr/local/share/trivy/templates/junit.tpl" -o $(sariflog)/TEST-Compliance_Dockerfile_Report.sarif config $(dockerfilePath)
               echo "***SBOM Analysis***"
               echo "[+] Creating Trivy SBOM JSON File" 
               trivy --quiet image --list-all-pkgs --scanners vuln --format cyclonedx --output $(sariflog)/SBOM_Cyclonedx_Report.json --exit-code 0 $(containerRegistryn)/$(imageRepository)
@@ -75,4 +75,4 @@ stages:
             mergeTestResults: true
             testRunTitle: 'Trivy CLI Report'
             failTaskOnFailedTests: true
-            publishRunAttachements: true
+            publishRunAttachments: true
