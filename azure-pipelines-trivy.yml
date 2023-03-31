@@ -63,6 +63,6 @@ stages:
 #              trivy --quiet -f table config $(dockerfilePath)
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: '$(Pipeline.Workspace)/$(sariflog)'
+            targetPath: './$(sariflog)'
             artifact: '$(sariflog)'
             publishLocation: 'pipeline'
