@@ -131,7 +131,7 @@ stages:
           inputs:
             targetType: 'inline'
             script: |
-              # Write your commands here
+              cd $(Build.SourcesDirectory)
               mkdir $(sariflog)
               export TRIVY_AUTH_URL=$(URL)
               export TRIVY_USERNAME=$(USERNAME)
