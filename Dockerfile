@@ -1,5 +1,5 @@
 # use a node base image
-FROM node:20.7
+FROM node:20.8
 
 # Create app directory
 WORKDIR /usr/src/app
